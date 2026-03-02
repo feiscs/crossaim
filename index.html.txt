@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CROSS AIM - VALORANT PREMIER TEAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/valorant');
+        
+        :root {
+            --v-red: #ff4655;
+            --v-dark: #0f1923;
+            --v-gold: #f0c75e;
+            --v-cyan: #00d4ff;
+            --v-purple: #bd4ee8;
+            --v-green: #00ff88;
+            --v-omen: #4b0082;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0a0e13;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-val { font-family: 'VALORANT', sans-serif; letter-spacing: 0.05em; }
+        
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 70, 85, 0.8), 0 0 20px rgba(255, 70, 85, 0.4);
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 70, 85, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 70, 85, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .player-card {
+            background: linear-gradient(180deg, rgba(31, 39, 49, 0.95) 0%, rgba(15, 25, 35, 0.98) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--agent-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--agent-color-glow);
+        }
+
+        .agent-panel {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            background: linear-gradient(180deg, var(--agent-color-dark) 0%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid var(--agent-color);
+        }
+
+        .agent-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid var(--agent-color);
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px var(--agent-color-glow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .agent-name-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            color: var(--agent-color);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        .team-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 70, 85, 0.2);
+            border: 1px solid var(--v-red);
+            padding: 4px 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: white;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: 50px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--v-red), #cc3844);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .jersey-section {
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.95) 0%, rgba(5, 10, 15, 0.98) 100%);
+            border: 2px solid var(--v-red);
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 100%);
+        }
+
+        .jersey-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .jersey-card {
+            background: linear-gradient(145deg, #1a1f2e 0%, #0f1419 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .jersey-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px var(--jersey-glow);
+        }
+
+        .jersey-visual {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--jersey-color-dark) 0%, var(--jersey-color) 50%, var(--jersey-color-dark) 100%);
+            border-radius: 10px 10px 30px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 1rem;
+            position: relative;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .jersey-collar {
+            width: 60%;
+            height: 25px;
+            background: linear-gradient(180deg, #0a0e13 0%, #1a1f2e 100%);
+            border-radius: 0 0 20px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .jersey-collar::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            height: 15px;
+            background: var(--jersey-accent);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+
+        .jersey-logo {
+            font-family: 'VALORANT', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 20px var(--jersey-glow);
+            letter-spacing: 0.1em;
+        }
+
+        .jersey-number {
+            font-family: 'VALORANT', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 20px var(--jersey-glow);
+            line-height: 1;
+        }
+
+        .jersey-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .jersey-details {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .jersey-player-name {
+            font-family: 'VALORANT', sans-serif;
+            font-size: 1.2rem;
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-valorant {
+            background: var(--v-red);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-family: 'VALORANT', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-valorant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 70, 85, 0.4);
+        }
+
+        .discord-widget-container {
+            position: fixed;
+            right: -370px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            transition: right 0.5s;
+        }
+
+        .discord-widget-container.active { right: 20px; }
+
+        .discord-toggle {
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #5865F2, #4752C4);
+            border-radius: 10px 0 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: -5px 0 20px rgba(88, 101, 242, 0.5);
+        }
+
+        .discord-widget-wrapper {
+            background: rgba(30, 31, 34, 0.95);
+            border-radius: 10px;
+            border: 2px solid #5865F2;
+            box-shadow: 0 0 40px rgba(88, 101, 242, 0.4);
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .discord-widget-container {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                margin: 2rem auto;
+                width: fit-content;
+            }
+            .discord-toggle { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-grid"></div>
+
+    <!-- Discord Widget -->
+    <div class="discord-widget-container" id="discordWidget">
+        <div class="discord-toggle" onclick="toggleDiscord()">
+            <svg fill="white" viewBox="0 0 24 24" width="30" height="30">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+            </svg>
+        </div>
+        <div class="discord-widget-wrapper">
+            <iframe src="https://discord.com/widget?id=1244864184513069156&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+        </div>
+    </div>
+
+    <header class="relative pt-8 pb-4 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col items-center">
+            <h1 class="font-val text-5xl md:text-8xl text-white mb-2 text-glow tracking-wider">
+                CROSS AIM
+            </h1>
+            <div class="flex items-center gap-4 text-gray-400 text-sm uppercase tracking-[0.4em] font-semibold">
+                <span class="w-16 h-[2px] bg-gradient-to-r from-transparent to-[#ff4655]"></span>
+                <span class="text-[#ff4655]">Elite Competitive Unit</span>
+                <span class="w-16 h-[2px] bg-gradient-to-l from-transparent to-[#ff4655]"></span>
+            </div>
+            <div class="mt-6 flex items-center gap-3 bg-[#1f2731]/80 border border-[#f0c75e]/30 px-6 py-3">
+                <div class="w-3 h-3 bg-[#f0c75e] rotate-45"></div>
+                <span class="text-[#f0c75e] font-val text-lg tracking-widest">PREMIER DIVISION 2026</span>
+                <div class="w-3 h-3 bg-[#f0c75e] rotate-45"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-gradient-to-r from-transparent via-[#f0c75e]/10 to-transparent border-y border-[#f0c75e]/30 py-4 text-center my-8">
+        <p class="text-[#f0c75e] font-semibold tracking-[0.3em] text-sm uppercase">
+            Temporada de Competición • Roster Oficial • 7 Miembros
+        </p>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 pb-12">
+
+        <!-- ROSTER -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4 mb-16">
+
+            <!-- K1AN ST - JETT -->
+            <div class="player-card h-[280px]" style="--agent-color: #00d4ff; --agent-color-dark: rgba(0, 212, 255, 0.2); --agent-color-glow: rgba(0, 212, 255, 0.5); --status-color: #00ff88;">
+                <div class="team-badge">Cross Aim</div>
+                <div class="rank-badge">87</div>
+                <div class="agent-panel">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 100 100" fill="none" width="40" height="40">
+                            <circle cx="50" cy="50" r="35" stroke="#00d4ff" stroke-width="2" fill="none"/>
+                            <path d="M50 20 L55 50 L50 75 L45 50 Z" fill="#00d4ff"/>
+                            <circle cx="50" cy="50" r="8" fill="#00d4ff"/>
+                        </svg>
+                    </div>
+                    <div class="agent-name-vertical">Jett</div>
+                </div>
+                <div class="ml-20 p-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Duelista</div>
+                        <h3 class="font-val text-xl text-white">K1AN ST</h3>
+                        <div class="text-xs text-gray-500 mt-1">Booyah</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#00ff88] rounded-full shadow-[0_0_10px_#00ff88]"></span>
+                        <span class="text-[#00ff88] text-xs font-bold uppercase">En línea</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grangerr - Clove -->
+            <div class="player-card h-[280px]" style="--agent-color: #bd4ee8; --agent-color-dark: rgba(189, 78, 232, 0.2); --agent-color-glow: rgba(189, 78, 232, 0.5); --status-color: #ff4655;">
+                <div class="team-badge">Cross Aim</div>
+                <div class="rank-badge">88</div>
+                <div class="agent-panel">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 100 100" fill="none" width="40" height="40">
+                            <circle cx="50" cy="50" r="35" stroke="#bd4ee8" stroke-width="2"/>
+                            <path d="M50 25 L50 75 M25 50 L75 50" stroke="#bd4ee8" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="10" fill="#bd4ee8"/>
+                        </svg>
+                    </div>
+                    <div class="agent-name-vertical">Clove</div>
+                </div>
+                <div class="ml-20 p-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-[#bd4ee8] uppercase tracking-wider mb-1">Controlador</div>
+                        <h3 class="font-val text-xl text-white">Grangerr</h3>
+                        <div class="text-xs text-gray-500 mt-1">Sin equipo</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#ff4655] rounded-full shadow-[0_0_10px_#ff4655]"></span>
+                        <span class="text-[#ff4655] text-xs font-bold uppercase">En partida</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEISpla - REYNA (CAPITÁN) -->
+            <div class="player-card h-[300px] lg:-mt-2 border-2 border-[#ff4655]" style="--agent-color: #ff4655; --agent-color-dark: rgba(255, 70, 85, 0.2); --agent-color-glow: rgba(255, 70, 85, 0.5); --status-color: #00ff88;">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#ff4655] to-transparent"></div>
+                <div class="team-badge" style="background: rgba(145, 70, 255, 0.3); border-color: #9146ff;">Twitch</div>
+                <div class="rank-badge" style="background: linear-gradient(135deg, #f0c75e, #c9a227); color: #000;">★</div>
+                <div class="agent-panel" style="border-color: #ff4655;">
+                    <div class="agent-icon" style="border-color: #ff4655;">
+                        <svg viewBox="0 0 100 100" fill="none" width="40" height="40">
+                            <circle cx="50" cy="50" r="35" stroke="#ff4655" stroke-width="2"/>
+                            <path d="M50 25 L50 75 M25 50 L75 50" stroke="#ff4655" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="12" fill="#ff4655"/>
+                        </svg>
+                    </div>
+                    <div class="agent-name-vertical" style="color: #ff4655;">Reyna</div>
+                </div>
+                <div class="ml-20 p-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-[#ff4655] uppercase tracking-wider mb-1">Duelista • Capitán</div>
+                        <h3 class="font-val text-lg text-[#ff4655]">FEISpla</h3>
+                        <div class="text-xs text-gray-500 mt-1">Caballos de Fuerza</div>
+                        <div class="mt-2 inline-flex items-center gap-1 text-[#9146ff] text-xs font-bold">
+                            <span class="w-2 h-2 bg-[#9146ff] rounded-full animate-pulse"></span>
+                            LIVE
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#00ff88] rounded-full shadow-[0_0_10px_#00ff88]"></span>
+                        <span class="text-[#00ff88] text-xs font-bold uppercase">Listo</span>
+                    </div>
+                </div>
+                <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 text-[#ff4655] text-xs font-bold tracking-widest uppercase bg-black/50 px-2 rounded">Capitán</div>
+            </div>
+
+            <!-- Sanstiago214 - YORU -->
+            <div class="player-card h-[280px]" style="--agent-color: #f0c75e; --agent-color-dark: rgba(240, 199, 94, 0.2); --agent-color-glow: rgba(240, 199, 94, 0.5); --status-color: #ff4655;">
+                <div class="team-badge">Cross Aim</div>
+                <div class="rank-badge">83</div>
+                <div class="agent-panel">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 100 100" fill="none" width="40" height="40">
+                            <circle cx="50" cy="50" r="35" stroke="#f0c75e" stroke-width="2"/>
+                            <path d="M30 40 L45 50 L30 60 Z" fill="#f0c75e"/>
+                            <path d="M70 40 L55 50 L70 60 Z" fill="#f0c75e"/>
+                            <circle cx="50" cy="50" r="8" fill="#f0c75e"/>
+                        </svg>
+                    </div>
+                    <div class="agent-name-vertical" style="color: #f0c75e;">Yoru</div>
+                </div>
+                <div class="ml-20 p-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-[#f0c75e] uppercase tracking-wider mb-1">Duelista</div>
+                        <h3 class="font-val text-lg text-white">Sanstiago214</h3>
+                        <div class="text-xs text-gray-500 mt-1">Sin equipo</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#ff4655] rounded-full shadow-[0_0_10px_#ff4655]"></span>
+                        <span class="text-[#ff4655] text-xs font-bold uppercase">Offline</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FarminXd - SOVA -->
+            <div class="player-card h-[280px]" style="--agent-color: #00d4ff; --agent-color-dark: rgba(0, 212, 255, 0.2); --agent-color-glow: rgba(0, 212, 255, 0.5); --status-color: #00ff88;">
+                <div class="team-badge">Cross Aim</div>
+                <div class="rank-badge">87</div>
+                <div class="agent-panel">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 100 100" fill="none" width="40" height="40">
+                            <circle cx="50" cy="50" r="35" stroke="#00d4ff" stroke-width="2"/>
+                            <path d="M50 20 L50 80 M20 50 L80 50" stroke="#00d4ff" stroke-width="2"/>
+                            <circle cx="50" cy="50" r="10" fill="#00d4ff"/>
+                        </svg>
+                    </div>
+                    <div class="agent-name-vertical" style="color: #00d4ff;">Sova</div>
+                </div>
+                <div class="ml-20 p-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-[#00d4ff] uppercase tracking-wider mb-1">Iniciador</div>
+                        <h3 class="font-val text-xl text-white">FarminXd</h3>
+                        <div class="text-xs text-gray-500 mt-1">Sin equipo</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#00ff88] rounded-full shadow-[0_0_10px_#00ff88]"></span>
+                        <span class="text-[#00ff88] text-xs font-bold uppercase">En línea</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tavoalbrnoz - DEADLOCK -->
+            <div class="player-card h-[280px]" style="--agent-color: #00ff88; --agent-color-dark: rgba(0, 255, 136, 0.2); --agent-color-glow: rgba(0, 255, 136, 0.5); --status-color: #00ff88;">
+                <div class="team-badge" style="background: rgba(0, 255, 136, 0.2); border-color: #00ff88;">Nuevo</div>
+                <div class="rank-badge">--</div>
+                <div class="agent-panel" style="border-color: #00ff88;">
+                    <div class="agent-icon" style="border-color: #00ff88;">
+                        <svg viewBox="0 0 100 100" fill="none" width="40" height="40">
+                            <circle cx="50" cy="50" r="35" stroke="#00ff88" stroke-width="2"/>
+                            <path d="M50 25 L50 75 M25 50 L75 50" stroke="#00ff88" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="8" fill="#00ff88"/>
+                        </svg>
+                    </div>
+                    <div class="agent-name-vertical" style="color: #00ff88;">Deadlock</div>
+                </div>
+                <div class="ml-20 p-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-[#00ff88] uppercase tracking-wider mb-1">Centinela</div>
+                        <h3 class="font-val text-sm text-white">Tavoalbrnoz</h3>
+                        <div class="text-xs text-gray-500 mt-1">Nuevo miembro</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#00ff88] rounded-full shadow-[0_0_10px_#00ff88]"></span>
+                        <span class="text-[#00ff88] text-xs font-bold uppercase">En línea</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stealthlink - OMEN -->
+            <div class="player-card h-[280px]" style="--agent-color: #4b0082; --agent-color-dark: rgba(75, 0, 130, 0.3); --agent-color-glow: rgba(139, 0, 255, 0.6); --status-color: #00ff88;">
+                <div class="team-badge" style="background: rgba(75, 0, 130, 0.4); border-color: #4b0082;">Nuevo</div>
+                <div class="rank-badge">--</div>
+                <div class="agent-panel" style="border-color: #4b0082;">
+                    <div class="agent-icon" style="border-color: #4b0082;">
+                        <svg viewBox="0 0 100 100" fill="none" width="40" height="40">
+                            <circle cx="50" cy="50" r="35" stroke="#8b00ff" stroke-width="2"/>
+                            <path d="M50 25 L50 75" stroke="#8b00ff" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="10" fill="#8b00ff"/>
+                        </svg>
+                    </div>
+                    <div class="agent-name-vertical" style="color: #8b00ff;">Omen</div>
+                </div>
+                <div class="ml-20 p-4 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs text-[#8b00ff] uppercase tracking-wider mb-1">Controlador</div>
+                        <h3 class="font-val text-sm text-white">Stealthlink</h3>
+                        <div class="text-xs text-gray-500 mt-1">Nuevo miembro</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#00ff88] rounded-full shadow-[0_0_10px_#00ff88]"></span>
+                        <span class="text-[#00ff88] text-xs font-bold uppercase">Recruit</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- JERSEYS SECTION -->
+        <div class="jersey-section mb-16">
+            <div class="text-center pt-8 pb-4">
+                <h2 class="font-val text-4xl md:text-6xl text-white mb-2 tracking-widest text-glow">
+                    JERSEYS OFICIALES
+                </h2>
+                <div class="flex items-center justify-center gap-4 text-[#ff4655] text-sm uppercase tracking-[0.5em] font-bold">
+                    <span class="w-16 h-[2px] bg-[#ff4655]"></span>
+                    <span>Equipo Competitivo 2026</span>
+                    <span class="w-16 h-[2px] bg-[#ff4655]"></span>
+                </div>
+            </div>
+
+            <div class="jersey-grid">
+
+                <!-- JERSEY 1: K1AN ST -->
+                <div class="jersey-card" style="--jersey-color: #00d4ff; --jersey-color-dark: rgba(0, 212, 255, 0.3); --jersey-glow: rgba(0, 212, 255, 0.6); --jersey-accent: #ff4655;">
+                    <div class="jersey-visual">
+                        <div class="jersey-collar"></div>
+                        <div class="jersey-logo">CA</div>
+                        <div class="jersey-number">87</div>
+                        <div class="jersey-name">K1AN ST</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name">K1AN ST</div>
+                        <div class="text-[#00d4ff] text-sm font-bold uppercase tracking-wider">Duelista • Jett</div>
+                    </div>
+                </div>
+
+                <!-- JERSEY 2: Grangerr -->
+                <div class="jersey-card" style="--jersey-color: #bd4ee8; --jersey-color-dark: rgba(189, 78, 232, 0.3); --jersey-glow: rgba(189, 78, 232, 0.6); --jersey-accent: #ff4655;">
+                    <div class="jersey-visual">
+                        <div class="jersey-collar"></div>
+                        <div class="jersey-logo">CA</div>
+                        <div class="jersey-number">88</div>
+                        <div class="jersey-name">GRANGERR</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name">Grangerr</div>
+                        <div class="text-[#bd4ee8] text-sm font-bold uppercase tracking-wider">Controlador • Clove</div>
+                    </div>
+                </div>
+
+                <!-- JERSEY 3: FEISpla (CAPITÁN) -->
+                <div class="jersey-card" style="--jersey-color: #ff4655; --jersey-color-dark: rgba(255, 70, 85, 0.3); --jersey-glow: rgba(255, 70, 85, 0.8); --jersey-accent: #f0c75e;">
+                    <div class="jersey-visual" style="border: 2px solid #f0c75e;">
+                        <div class="absolute top-2 right-2 bg-[#f0c75e] text-black text-xs font-black px-2 py-1 rounded">CAP</div>
+                        <div class="jersey-collar"></div>
+                        <div class="jersey-logo" style="color: #f0c75e;">CA</div>
+                        <div class="jersey-number" style="color: #f0c75e;">★</div>
+                        <div class="jersey-name" style="border-color: #f0c75e;">FEISPLA</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name text-[#ff4655]">FEISpla</div>
+                        <div class="text-[#ff4655] text-sm font-bold uppercase tracking-wider">Duelista • Reyna • Capitán</div>
+                    </div>
+                </div>
+
+                <!-- JERSEY 4: Sanstiago214 -->
+                <div class="jersey-card" style="--jersey-color: #f0c75e; --jersey-color-dark: rgba(240, 199, 94, 0.3); --jersey-glow: rgba(240, 199, 94, 0.6); --jersey-accent: #ff4655;">
+                    <div class="jersey-visual">
+                        <div class="jersey-collar"></div>
+                        <div class="jersey-logo">CA</div>
+                        <div class="jersey-number">83</div>
+                        <div class="jersey-name">SANTIAGO</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name">Sanstiago214</div>
+                        <div class="text-[#f0c75e] text-sm font-bold uppercase tracking-wider">Duelista • Yoru</div>
+                    </div>
+                </div>
+
+                <!-- JERSEY 5: FarminXd -->
+                <div class="jersey-card" style="--jersey-color: #00d4ff; --jersey-color-dark: rgba(0, 212, 255, 0.3); --jersey-glow: rgba(0, 212, 255, 0.6); --jersey-accent: #ff4655;">
+                    <div class="jersey-visual">
+                        <div class="jersey-collar"></div>
+                        <div class="jersey-logo">CA</div>
+                        <div class="jersey-number">87</div>
+                        <div class="jersey-name">FARMINXD</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name">FarminXd</div>
+                        <div class="text-[#00d4ff] text-sm font-bold uppercase tracking-wider">Iniciador • Sova</div>
+                    </div>
+                </div>
+
+                <!-- JERSEY 6: Tavoalbrnoz -->
+                <div class="jersey-card" style="--jersey-color: #00ff88; --jersey-color-dark: rgba(0, 255, 136, 0.3); --jersey-glow: rgba(0, 255, 136, 0.6); --jersey-accent: #ff4655;">
+                    <div class="jersey-visual">
+                        <div class="jersey-collar"></div>
+                        <div class="jersey-logo">CA</div>
+                        <div class="jersey-number" style="font-size: 3rem;">NEW</div>
+                        <div class="jersey-name">TAVOALBR</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name">Tavoalbrnoz</div>
+                        <div class="text-[#00ff88] text-sm font-bold uppercase tracking-wider">Centinela • Deadlock</div>
+                    </div>
+                </div>
+
+                <!-- JERSEY 7: Stealthlink -->
+                <div class="jersey-card" style="--jersey-color: #4b0082; --jersey-color-dark: rgba(75, 0, 130, 0.4); --jersey-glow: rgba(139, 0, 255, 0.6); --jersey-accent: #ff4655;">
+                    <div class="jersey-visual">
+                        <div class="jersey-collar"></div>
+                        <div class="jersey-logo">CA</div>
+                        <div class="jersey-number" style="font-size: 3rem;">NEW</div>
+                        <div class="jersey-name">STEALTH</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name">Stealthlink</div>
+                        <div class="text-[#8b00ff] text-sm font-bold uppercase tracking-wider">Controlador • Omen</div>
+                    </div>
+                </div>
+
+                <!-- JERSEY 8: Equipo -->
+                <div class="jersey-card" style="--jersey-color: #ff4655; --jersey-color-dark: rgba(255, 70, 85, 0.3); --jersey-glow: rgba(255, 70, 85, 0.8); --jersey-accent: #f0c75e;">
+                    <div class="jersey-visual" style="background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%); border: 2px solid #ff4655;">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-10">
+                            <span class="font-val text-8xl">CA</span>
+                        </div>
+                        <div class="jersey-collar" style="background: #ff4655;"></div>
+                        <div class="jersey-logo" style="color: #ff4655; font-size: 2.5rem;">CROSS<br>AIM</div>
+                        <div class="jersey-number" style="color: #ff4655;">2026</div>
+                        <div class="jersey-name" style="background: #ff4655; color: white;">EQUIPO</div>
+                    </div>
+                    <div class="jersey-details">
+                        <div class="jersey-player-name text-[#ff4655]">Jersey Equipo</div>
+                        <div class="text-[#ff4655] text-sm font-bold uppercase tracking-wider">Edición Especial • Premier</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center pb-8 mt-8">
+                <button class="btn-valorant text-xl px-12 py-4" onclick="alert('¡Próximamente disponible!')">
+                    <svg class="w-6 h-6 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    COMPRAR JERSEY
+                </button>
+            </div>
+        </div>
+
+        <!-- Discord -->
+        <div class="flex flex-col items-center gap-6">
+            <a href="https://discord.gg/P9YKyVvNrG" target="_blank" class="btn-valorant text-lg">
+                <svg class="w-6 h-6 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                </svg>
+                Únete a Discord
+            </a>
+            
+            <div class="bg-[#5865F2]/10 border border-[#5865F2]/30 p-4 text-center rounded">
+                <div class="text-gray-400 text-xs uppercase tracking-widest mb-1">Server ID</div>
+                <div class="text-[#5865F2] font-mono font-bold text-lg">1244864184513069156</div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-white/10 py-8 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-3 mb-2">
+                <div class="w-2 h-2 bg-[#ff4655] rounded-full animate-pulse"></div>
+                <span class="font-val text-gray-500 tracking-[0.3em] text-sm">CROSS AIM © 2026</span>
+                <div class="w-2 h-2 bg-[#ff4655] rounded-full animate-pulse"></div>
+            </div>
+            <div class="text-[#ff4655]/50 text-xs uppercase tracking-[0.4em] font-bold">Valorant Premier Competitive</div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDiscord() {
+            const widget = document.getElementById('discordWidget');
+            widget.classList.toggle('active');
+        }
+        setTimeout(() => {
+            document.getElementById('discordWidget').classList.add('active');
+        }, 3000);
+    </script>
+
+</body>
+</html>
