@@ -24,6 +24,10 @@
             --gray-500: #6b7280;
             --white: #ffffff;
             --accent: #ff4655;
+            --tier-bronze: #cd7f32;
+            --tier-silver: #c0c0c0;
+            --tier-gold: #ffd700;
+            --tier-platinum: #e5e4e2;
         }
 
         html {
@@ -486,141 +490,191 @@
             transform: scale(1.1);
         }
 
-        /* Streaming Section */
-        .streaming-section {
+        /* Membership Section */
+        .membership-section {
             padding: 6rem 2rem;
-            background: linear-gradient(180deg, var(--black) 0%, #1a0a0c 50%, var(--black) 100%);
+            background: linear-gradient(180deg, var(--black) 0%, #0f0f0f 50%, var(--black) 100%);
             position: relative;
             overflow: hidden;
         }
 
-        .streaming-section::before {
+        .membership-section::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at center, rgba(255, 70, 85, 0.1) 0%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(255, 70, 85, 0.08) 0%, transparent 70%);
         }
 
-        .streaming-content {
+        .membership-content {
             max-width: 1400px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
         }
 
-        .streaming-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+        .membership-header {
+            text-align: center;
+            margin-bottom: 4rem;
         }
 
-        .streaming-info h2 {
+        .membership-header h2 {
             font-family: 'Rajdhani', sans-serif;
             font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             text-transform: uppercase;
         }
 
-        .streaming-info p {
+        .membership-header p {
             color: var(--gray-400);
             font-size: 1.125rem;
-            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .membership-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .tier-card {
+            background: var(--black-light);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--tier-color);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--tier-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(var(--tier-rgb), 0.15);
+        }
+
+        .tier-card:hover::before {
+            opacity: 1;
+        }
+
+        .tier-card.bronze { --tier-color: #cd7f32; --tier-rgb: 205, 127, 50; }
+        .tier-card.silver { --tier-color: #c0c0c0; --tier-rgb: 192, 192, 192; }
+        .tier-card.gold { --tier-color: #ffd700; --tier-rgb: 255, 215, 0; }
+        .tier-card.platinum { --tier-color: #e5e4e2; --tier-rgb: 229, 228, 226; }
+
+        .tier-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            background: rgba(var(--tier-rgb), 0.1);
+            border: 2px solid var(--tier-color);
+            color: var(--tier-color);
+        }
+
+        .tier-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--tier-color);
+        }
+
+        .tier-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .tier-price span {
+            font-size: 1rem;
+            color: var(--gray-500);
+            font-weight: 400;
+        }
+
+        .tier-benefits {
+            list-style: none;
+            text-align: left;
             margin-bottom: 2rem;
         }
 
-        .platforms {
+        .tier-benefits li {
+            padding: 0.5rem 0;
+            color: var(--gray-400);
+            font-size: 0.9rem;
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .platform-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .platform-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .platform-btn.twitch { 
-            background: #9146ff; 
-        }
-        .platform-btn.twitch:hover {
-            background: #a05fff;
-            box-shadow: 0 10px 30px rgba(145, 70, 255, 0.4);
-        }
-
-        .platform-btn.youtube { 
-            background: #ff0000; 
-        }
-        .platform-btn.youtube:hover {
-            background: #ff3333;
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
-        }
-
-        .platform-btn.kick { 
-            background: #53fc18; 
-            color: black;
-        }
-        .platform-btn.kick:hover {
-            background: #6eff3f;
-            box-shadow: 0 10px 30px rgba(83, 252, 24, 0.4);
-        }
-
-        .streaming-preview {
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .stream-thumbnail {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: var(--gray-900);
-        }
-
-        .live-indicator {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tier-benefits li:last-child {
+            border-bottom: none;
+        }
+
+        .tier-benefits li::before {
+            content: '✓';
+            color: var(--tier-color);
             font-weight: 700;
-            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .tier-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: transparent;
+            border: 2px solid var(--tier-color);
+            color: var(--tier-color);
+            border-radius: 8px;
+            font-weight: 600;
             text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .live-dot {
-            width: 8px;
-            height: 8px;
-            background: #ff0000;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+        .tier-btn:hover {
+            background: var(--tier-color);
+            color: var(--black);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(var(--tier-rgb), 0.3);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .membership-note {
+            text-align: center;
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .membership-note strong {
+            color: var(--red);
         }
 
         /* Stats Section */
@@ -842,12 +896,8 @@
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .streaming-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
+        @media (max-width: 1200px) {
+            .membership-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -872,9 +922,13 @@
             }
             
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
             
+            .membership-grid {
+                grid-template-columns: 1fr;
+            }
+
             .support-grid {
                 grid-template-columns: 1fr;
             }
@@ -916,7 +970,7 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#roster">Roster</a></li>
-                <li><a href="#streams">Streams</a></li>
+                <li><a href="#membership">Membership</a></li>
                 <li><a href="#support">Support</a></li>
             </ul>
             <div class="nav-right">
@@ -995,7 +1049,7 @@
                 </div>
             </div>
 
-            <!-- Player 2 - FEISpla (Reyna) - CORREGIDO CON AGENTE REYNA -->
+            <!-- Player 2 - FEISpla (Reyna) -->
             <div class="player-card" style="border: 2px solid rgba(168, 85, 247, 0.3);">
                 <div class="player-image-container">
                     <img src="https://static.invenglobal.com/upload/image/2020/05/30/i1590864720143467.jpeg" alt="Reyna" class="player-image agent-reyna">
@@ -1123,37 +1177,85 @@
         </div>
     </section>
 
-    <!-- Streaming Section -->
-    <section class="streaming-section" id="streams">
-        <div class="streaming-content">
-            <div class="streaming-grid">
-                <div class="streaming-info">
-                    <h2>Watch Us Live</h2>
-                    <p>Follow our journey through ranked grinds, scrims, and tournaments. FEISpla streams regularly showing high-level duelist gameplay and team communications.</p>
-                    
-                    <div class="platforms">
-                        <a href="https://www.twitch.tv/feispla" target="_blank" class="platform-btn twitch">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
-                            Twitch
-                        </a>
-                        <a href="https://www.youtube.com/@FEISPLA" target="_blank" class="platform-btn youtube">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                            YouTube
-                        </a>
-                        <a href="https://kick.com/fe1ss" target="_blank" class="platform-btn kick">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            Kick
-                        </a>
-                    </div>
+    <!-- Membership Section -->
+    <section class="membership-section" id="membership">
+        <div class="membership-content">
+            <div class="membership-header">
+                <h2>Support Cross Aim</h2>
+                <p>Únete a nuestra comunidad exclusiva y obtén beneficios únicos mientras apoyas al equipo. Cada tier incluye acceso a contenido premium y coaching profesional.</p>
+            </div>
+
+            <div class="membership-grid">
+                <!-- Tier 1 - Bronze $5 -->
+                <div class="tier-card bronze">
+                    <div class="tier-icon">🥉</div>
+                    <h3 class="tier-name">Bronze</h3>
+                    <div class="tier-price">$5<span>/mes</span></div>
+                    <ul class="tier-benefits">
+                        <li>Rol exclusivo en Discord "Bronze Supporter"</li>
+                        <li>Acceso al canal privado de Discord</li>
+                        <li>Emojis personalizados del equipo</li>
+                        <li>Mención especial en redes sociales</li>
+                        <li>Acceso a wallpapers exclusivos</li>
+                    </ul>
+                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
                 </div>
-                
-                <div class="streaming-preview">
-                    <div class="live-indicator">
-                        <div class="live-dot"></div>
-                        Live
-                    </div>
-                    <img src="https://static.invenglobal.com/upload/image/2020/05/30/i1590864720143467.jpeg" alt="Stream Preview" class="stream-thumbnail" style="object-position: center 10%;">
+
+                <!-- Tier 2 - Silver $15 -->
+                <div class="tier-card silver">
+                    <div class="tier-icon">🥈</div>
+                    <h3 class="tier-name">Silver</h3>
+                    <div class="tier-price">$15<span>/mes</span></div>
+                    <ul class="tier-benefits">
+                        <li>Todos los beneficios Bronze</li>
+                        <li>Rol "Silver Supporter" en Discord</li>
+                        <li>Sesión de coaching grupal mensual</li>
+                        <li>Acceso a VODs de scrims del equipo</li>
+                        <li>Prioridad en partidas custom</li>
+                        <li>Descuento en merchandise del equipo</li>
+                    </ul>
+                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
                 </div>
+
+                <!-- Tier 3 - Gold $25 -->
+                <div class="tier-card gold">
+                    <div class="tier-icon">🥇</div>
+                    <h3 class="tier-name">Gold</h3>
+                    <div class="tier-price">$25<span>/mes</span></div>
+                    <ul class="tier-benefits">
+                        <li>Todos los beneficios Silver</li>
+                        <li>Rol "Gold Supporter" en Discord</li>
+                        <li>Coaching 1v1 mensual (30 min)</li>
+                        <li>Review de partidas personales</li>
+                        <li>Acceso a entrenamientos del equipo</li>
+                        <li>Invitación a torneos privados</li>
+                        <li>Merchandise exclusivo Gold</li>
+                    </ul>
+                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
+                </div>
+
+                <!-- Tier 4 - Platinum $35 -->
+                <div class="tier-card platinum">
+                    <div class="tier-icon">💎</div>
+                    <h3 class="tier-name">Platinum</h3>
+                    <div class="tier-price">$35<span>/mes</span></div>
+                    <ul class="tier-benefits">
+                        <li>Todos los beneficios Gold</li>
+                        <li>Rol "Platinum Elite" en Discord</li>
+                        <li>Coaching 1v1 semanal (1 hora)</li>
+                        <li>Análisis de gameplay en vivo</li>
+                        <li>Acceso completo a scrims y entrenamientos</li>
+                        <li>Partidas privadas con el roster</li>
+                        <li>Kit completo de merchandise Platinum</li>
+                        <li>Sesión mensual con el IGL (FEISpla)</li>
+                    </ul>
+                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
+                </div>
+            </div>
+
+            <div class="membership-note">
+                <strong>💡 Nota:</strong> Todos los pagos se procesan de forma segura. Los beneficios se activan dentro de las 24 horas posteriores a la confirmación del pago. 
+                Para más información sobre métodos de pago alternativos, contáctanos en <strong>Discord</strong>.
             </div>
         </div>
     </section>
@@ -1233,11 +1335,11 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Cross Aim. All rights reserved.</p>
+                <p>&copy; 2026 Cross Aim. All rights reserved.</p>
                 <div class="footer-links">
                     <a href="#home">Home</a>
                     <a href="#roster">Roster</a>
-                    <a href="#support">Support</a>
+                    <a href="#membership">Membership</a>
                     <a href="https://discord.gg/PN63Qx9nuN" target="_blank">Contact</a>
                 </div>
             </div>
@@ -1280,7 +1382,7 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.player-card, .stat-card, .support-card').forEach(el => {
+        document.querySelectorAll('.player-card, .stat-card, .support-card, .tier-card').forEach(el => {
             el.classList.add('fade-in');
             observer.observe(el);
         });
