@@ -24,10 +24,16 @@
             --gray-500: #6b7280;
             --white: #ffffff;
             --accent: #ff4655;
-            --tier-bronze: #cd7f32;
-            --tier-silver: #c0c0c0;
-            --tier-gold: #ffd700;
-            --tier-platinum: #e5e4e2;
+            /* Valorant Rank Colors */
+            --rank-iron: #5c5c5c;
+            --rank-bronze: #8c7853;
+            --rank-silver: #b8b8b8;
+            --rank-gold: #d4af37;
+            --rank-platinum: #3d9e9e;
+            --rank-diamond: #b9f2ff;
+            --rank-ascendant: #2ecc71;
+            --rank-immortal: #b93af7;
+            --rank-radiant: #fff7cc;
         }
 
         html {
@@ -544,6 +550,7 @@
             margin-bottom: 3rem;
         }
 
+        /* Valorant Rank Tier Cards */
         .tier-card {
             background: var(--black-light);
             border: 2px solid rgba(255, 255, 255, 0.05);
@@ -577,23 +584,47 @@
             opacity: 1;
         }
 
-        .tier-card.bronze { --tier-color: #cd7f32; --tier-rgb: 205, 127, 50; }
-        .tier-card.silver { --tier-color: #c0c0c0; --tier-rgb: 192, 192, 192; }
-        .tier-card.gold { --tier-color: #ffd700; --tier-rgb: 255, 215, 0; }
-        .tier-card.platinum { --tier-color: #e5e4e2; --tier-rgb: 229, 228, 226; }
+        /* Rank Colors */
+        .tier-card.iron { --tier-color: var(--rank-iron); --tier-rgb: 92, 92, 92; }
+        .tier-card.bronze { --tier-color: var(--rank-bronze); --tier-rgb: 140, 120, 83; }
+        .tier-card.silver { --tier-color: var(--rank-silver); --tier-rgb: 184, 184, 184; }
+        .tier-card.gold { --tier-color: var(--rank-gold); --tier-rgb: 212, 175, 55; }
+        .tier-card.platinum { --tier-color: var(--rank-platinum); --tier-rgb: 61, 158, 158; }
+        .tier-card.diamond { --tier-color: var(--rank-diamond); --tier-rgb: 185, 242, 255; }
+        .tier-card.ascendant { --tier-color: var(--rank-ascendant); --tier-rgb: 46, 204, 113; }
+        .tier-card.immortal { --tier-color: var(--rank-immortal); --tier-rgb: 185, 58, 247; }
+        .tier-card.radiant { --tier-color: var(--rank-radiant); --tier-rgb: 255, 247, 204; }
 
-        .tier-icon {
-            width: 60px;
-            height: 60px;
+        .rank-icon {
+            width: 70px;
+            height: 70px;
             margin: 0 auto 1rem;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.75rem;
+            font-size: 2rem;
             background: rgba(var(--tier-rgb), 0.1);
-            border: 2px solid var(--tier-color);
+            border: 3px solid var(--tier-color);
             color: var(--tier-color);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .rank-icon::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--tier-color);
+            border-right-color: var(--tier-color);
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .tier-name {
@@ -645,26 +676,79 @@
             flex-shrink: 0;
         }
 
-        .tier-btn {
-            width: 100%;
-            padding: 0.875rem;
-            background: transparent;
-            border: 2px solid var(--tier-color);
-            color: var(--tier-color);
-            border-radius: 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
+        /* Payment Methods */
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
         }
 
-        .tier-btn:hover {
-            background: var(--tier-color);
-            color: var(--black);
+        .payment-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .payment-btn.paypal {
+            background: #0070ba;
+            color: white;
+            border-color: #0070ba;
+        }
+
+        .payment-btn.paypal:hover {
+            background: #005ea6;
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(var(--tier-rgb), 0.3);
+            box-shadow: 0 5px 15px rgba(0, 112, 186, 0.4);
+        }
+
+        .payment-btn.binance {
+            background: #f0b90b;
+            color: var(--black);
+            border-color: #f0b90b;
+        }
+
+        .payment-btn.binance:hover {
+            background: #d4a009;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 185, 11, 0.4);
+        }
+
+        .payment-btn.discord {
+            background: #5865f2;
+            color: white;
+            border-color: #5865f2;
+        }
+
+        .payment-btn.discord:hover {
+            background: #4752c4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
+        }
+
+        .payment-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-500);
+            font-size: 0.75rem;
+            margin: 0.5rem 0;
+        }
+
+        .payment-divider::before,
+        .payment-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .membership-note {
@@ -962,6 +1046,22 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Rank badge in player card */
+        .player-rank {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(var(--tier-rgb), 0.1);
+            border: 1px solid var(--tier-color);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--tier-color);
+            margin-left: 0.5rem;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -1180,7 +1280,7 @@
                 </div>
             </div>
 
-                        <!-- Player 8 - Nickname (Chamber/Jett) - NUEVO -->
+            <!-- Player 8 - Nickname (Chamber/Jett) - NUEVO -->
             <div class="player-card" style="border: 2px solid rgba(255, 215, 0, 0.3);">
                 <div class="player-image-container">
                     <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/94d795777116652279c4de73ba19976639c12f5d-1920x1080.jpg" alt="Jett" class="player-image agent-jett">
@@ -1199,87 +1299,144 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
-    <!-- Membership Section -->
+    <!-- Membership Section - ACTUALIZADA CON RANGOS VALORANT -->
     <section class="membership-section" id="membership">
         <div class="membership-content">
             <div class="membership-header">
                 <h2>Support Cross Aim</h2>
-                <p>Únete a nuestra comunidad exclusiva y obtén beneficios únicos mientras apoyas al equipo. Cada tier incluye acceso a contenido premium y coaching profesional.</p>
+                <p>Únete a nuestra comunidad exclusiva y obtén beneficios únicos mientras apoyas al equipo. Cada tier está basado en los rangos competitivos de Valorant.</p>
             </div>
 
             <div class="membership-grid">
-                <!-- Tier 1 - Bronze $5 -->
-                <div class="tier-card bronze">
-                    <div class="tier-icon">🥉</div>
-                    <h3 class="tier-name">Bronze</h3>
+                <!-- Tier 1 - Silver -->
+                <div class="tier-card silver">
+                    <div class="rank-icon">S</div>
+                    <h3 class="tier-name">Silver</h3>
                     <div class="tier-price">$5<span>/mes</span></div>
                     <ul class="tier-benefits">
-                        <li>Rol exclusivo en Discord "Bronze Supporter"</li>
-                        <li>Acceso al canal privado de Discord</li>
-                        <li>Emojis personalizados del equipo</li>
-                        <li>Mención especial en redes sociales</li>
+                        <li>Rol exclusivo en Discord "Silver Supporter"</li>
+                        <li>Acceso al canal general de supporters</li>
+                        <li>Emojis personalizados básicos</li>
+                        <li>Mención en agradecimientos mensuales</li>
                         <li>Acceso a wallpapers exclusivos</li>
                     </ul>
-                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
+                    <div class="payment-methods">
+                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
+                            Pagar con PayPal
+                        </a>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                            Pagar con Binance
+                        </a>
+                        <div class="payment-divider">o</div>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                            Más métodos en Discord
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Tier 2 - Silver $15 -->
-                <div class="tier-card silver">
-                    <div class="tier-icon">🥈</div>
-                    <h3 class="tier-name">Silver</h3>
-                    <div class="tier-price">$15<span>/mes</span></div>
-                    <ul class="tier-benefits">
-                        <li>Todos los beneficios Bronze</li>
-                        <li>Rol "Silver Supporter" en Discord</li>
-                        <li>Sesión de coaching grupal mensual</li>
-                        <li>Acceso a VODs de scrims del equipo</li>
-                        <li>Prioridad en partidas custom</li>
-                        <li>Descuento en merchandise del equipo</li>
-                    </ul>
-                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
-                </div>
-
-                <!-- Tier 3 - Gold $25 -->
+                <!-- Tier 2 - Gold -->
                 <div class="tier-card gold">
-                    <div class="tier-icon">🥇</div>
+                    <div class="rank-icon">G</div>
                     <h3 class="tier-name">Gold</h3>
-                    <div class="tier-price">$25<span>/mes</span></div>
+                    <div class="tier-price">$15<span>/mes</span></div>
                     <ul class="tier-benefits">
                         <li>Todos los beneficios Silver</li>
                         <li>Rol "Gold Supporter" en Discord</li>
-                        <li>Coaching 1v1 mensual (30 min)</li>
-                        <li>Review de partidas personales</li>
-                        <li>Acceso a entrenamientos del equipo</li>
-                        <li>Invitación a torneos privados</li>
-                        <li>Merchandise exclusivo Gold</li>
+                        <li>Sesión de coaching grupal quincenal</li>
+                        <li>Acceso a VODs de scrims del equipo</li>
+                        <li>Prioridad en partidas custom</li>
+                        <li>Descuento 10% en merchandise</li>
                     </ul>
-                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
+                    <div class="payment-methods">
+                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
+                            Pagar con PayPal
+                        </a>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                            Pagar con Binance
+                        </a>
+                        <div class="payment-divider">o</div>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                            Más métodos en Discord
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Tier 4 - Platinum $35 -->
+                <!-- Tier 3 - Platinum -->
                 <div class="tier-card platinum">
-                    <div class="tier-icon">💎</div>
+                    <div class="rank-icon">P</div>
                     <h3 class="tier-name">Platinum</h3>
-                    <div class="tier-price">$35<span>/mes</span></div>
+                    <div class="tier-price">$25<span>/mes</span></div>
                     <ul class="tier-benefits">
                         <li>Todos los beneficios Gold</li>
-                        <li>Rol "Platinum Elite" en Discord</li>
-                        <li>Coaching 1v1 semanal (1 hora)</li>
+                        <li>Rol "Platinum Supporter" en Discord</li>
+                        <li>Coaching 1v1 mensual (45 min)</li>
+                        <li>Review de partidas personales</li>
+                        <li>Acceso a entrenamientos del equipo (observador)</li>
+                        <li>Descuento 20% en merchandise</li>
+                        <li>Invitación a torneos privados</li>
+                    </ul>
+                    <div class="payment-methods">
+                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
+                            Pagar con PayPal
+                        </a>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                            Pagar con Binance
+                        </a>
+                        <div class="payment-divider">o</div>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                            Más métodos en Discord
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tier 4 - Immortal -->
+                <div class="tier-card immortal">
+                    <div class="rank-icon">IM</div>
+                    <h3 class="tier-name">Immortal</h3>
+                    <div class="tier-price">$50<span>/mes</span></div>
+                    <ul class="tier-benefits">
+                        <li>Todos los beneficios Platinum</li>
+                        <li>Rol "Immortal Elite" en Discord</li>
+                        <li>Coaching 1v1 quincenal (1 hora)</li>
                         <li>Análisis de gameplay en vivo</li>
-                        <li>Acceso completo a scrims y entrenamientos</li>
-                        <li>Partidas privadas con el roster</li>
-                        <li>Kit completo de merchandise Platinum</li>
+                        <li>Acceso a scrims como espectador</li>
+                        <li>Partidas privadas con el roster (2 por mes)</li>
+                        <li>Merchandise exclusivo Immortal</li>
                         <li>Sesión mensual con el IGL (FEISpla)</li>
                     </ul>
-                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="tier-btn">Unirse</a>
+                    <div class="payment-methods">
+                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
+                            Pagar con PayPal
+                        </a>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                            Pagar con Binance
+                        </a>
+                        <div class="payment-divider">o</div>
+                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                            Más métodos en Discord
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div class="membership-note">
                 <strong>💡 Nota:</strong> Todos los pagos se procesan de forma segura. Los beneficios se activan dentro de las 24 horas posteriores a la confirmación del pago. 
-                Para más información sobre métodos de pago alternativos, contáctanos en <strong>Discord</strong>.
+                Para más información sobre métodos de pago alternativos (Nequi, Daviplata, PSE, etc.), contáctanos en <strong>Discord</strong>.
             </div>
         </div>
     </section>
