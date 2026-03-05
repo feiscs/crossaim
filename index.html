@@ -3,1540 +3,978 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cross Aim - Professional Valorant Team</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>FEISS | Coaching Valorant Pro - CrossAim Venezuela</title>
+    <meta name="description" content="Coaching profesional de Valorant por FEISS. Entrenamiento, clases personalizadas, VOD reviews y preparación">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        valorant: {
+                            red: '#FF4655',
+                            dark: '#0F1923',
+                            gray: '#1E293B',
+                            neon: '#00F0FF',
+                            purple: '#BD00FF',
+                            gold: '#FFD700'
+                        }
+                    },
+                    fontFamily: {
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        orbitron: ['Orbitron', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'scan': 'scan 4s linear infinite'
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #FF4655, 0 0 10px #FF4655' },
+                            '100%': { boxShadow: '0 0 20px #FF4655, 0 0 30px #FF4655' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --red: #ff4655;
-            --red-dark: #dc2626;
-            --black: #0a0a0a;
-            --black-light: #111111;
-            --gray-900: #1a1a1a;
-            --gray-800: #2a2a2a;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --white: #ffffff;
-            --accent: #ff4655;
-            /* Valorant Rank Colors */
-            --rank-iron: #5c5c5c;
-            --rank-bronze: #8c7853;
-            --rank-silver: #b8b8b8;
-            --rank-gold: #d4af37;
-            --rank-platinum: #3d9e9e;
-            --rank-diamond: #b9f2ff;
-            --rank-ascendant: #2ecc71;
-            --rank-immortal: #b93af7;
-            --rank-radiant: #fff7cc;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--black);
-            color: var(--white);
+            background-color: #0F1923;
+            color: white;
             overflow-x: hidden;
-            line-height: 1.6;
         }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
+        
+        .neon-text {
+            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
+        }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 70, 85, 0.3);
+        }
+        
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(255, 70, 85, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 70, 85, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .clip-slant {
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+        }
+        
+        .valorant-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .valorant-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .valorant-btn:hover::before {
+            left: 100%;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 70, 85, 0.3);
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1.5rem 3rem;
-            transition: all 0.3s ease;
-            background: transparent;
-        }
-
-        .navbar.scrolled {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 70, 85, 0.1);
-            padding: 1rem 3rem;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 1.75rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--red), #ff6b7a);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 1.5rem;
-            color: white;
-            box-shadow: 0 0 20px rgba(255, 70, 85, 0.4);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--gray-400);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--white);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--red);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
             width: 100%;
+            height: 100%;
         }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
+        
+        .glitch::before {
+            animation: glitch-1 2s infinite;
+            color: #00F0FF;
+            z-index: -1;
         }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--gray-800);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.3s;
-            border: 1px solid transparent;
+        
+        .glitch::after {
+            animation: glitch-2 2s infinite;
+            color: #BD00FF;
+            z-index: -2;
         }
-
-        .social-icon:hover {
-            background: var(--red);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 70, 85, 0.4);
+        
+        @keyframes glitch-1 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(10% 0 60% 0); transform: translate(-2px, 0); }
+            80% { clip-path: inset(80% 0 5% 0); transform: translate(2px, 2px); }
         }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 2rem 4rem;
-            background: radial-gradient(ellipse at center, rgba(255, 70, 85, 0.15) 0%, transparent 70%),
-                        linear-gradient(to bottom, var(--black) 0%, var(--black-light) 100%);
-            overflow: hidden;
+        
+        @keyframes glitch-2 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+            40% { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(10% 0 80% 0); transform: translate(2px, 0); }
+            80% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, -2px); }
         }
-
-        .hero::before {
-            content: '';
+        
+        .particle {
             position: absolute;
-            inset: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="none" stroke="rgba(255,70,85,0.03)" stroke-width="0.5" x="0" y="0" width="100" height="100"/></svg>');
-            background-size: 50px 50px;
-            opacity: 0.5;
+            width: 4px;
+            height: 4px;
+            background: #FF4655;
+            border-radius: 50%;
+            pointer-events: none;
         }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 900px;
-        }
-
-        .team-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1.25rem;
-            background: rgba(255, 70, 85, 0.1);
-            border: 1px solid rgba(255, 70, 85, 0.3);
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--red);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 2rem;
-        }
-
-        .hero h1 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: clamp(4rem, 12vw, 8rem);
-            font-weight: 700;
-            line-height: 0.9;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-            background: linear-gradient(180deg, #ffffff 0%, #a1a1a1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--gray-400);
-            font-weight: 300;
-            margin-bottom: 3rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            margin-bottom: 3rem;
-        }
-
-        .hero-stat {
-            text-align: center;
-        }
-
-        .hero-stat-number {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--red);
-            line-height: 1;
-        }
-
-        .hero-stat-label {
-            font-size: 0.875rem;
-            color: var(--gray-500);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            border: none;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .btn-primary {
-            background: var(--red);
-            color: white;
-            box-shadow: 0 4px 20px rgba(255, 70, 85, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: #ff5a67;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 70, 85, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
-        }
-
-        /* Roster Section */
-        .roster-section {
-            padding: 6rem 2rem;
-            background: var(--black);
-            position: relative;
-        }
-
-        .section-header {
-            max-width: 1400px;
-            margin: 0 auto 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .section-title-group h2 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--red);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 0.5rem;
-        }
-
-        .section-title-group h3 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            text-transform: uppercase;
-            color: white;
-        }
-
-        .roster-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .player-card {
-            position: relative;
-            background: var(--black-light);
+        
+        .discord-widget {
+            border: 2px solid #5865F2;
             border-radius: 12px;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
         }
-
-        .player-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 70, 85, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 70, 85, 0.1);
-        }
-
-        .player-image-container {
+        
+        .price-tag {
             position: relative;
-            height: 380px;
-            overflow: hidden;
-            background: linear-gradient(180deg, var(--gray-800) 0%, var(--black-light) 100%);
+            display: inline-block;
         }
-
-        .player-image {
+        
+        .price-tag::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -10%;
+            width: 120%;
+            height: 2px;
+            background: rgba(255,255,255,0.3);
+            transform: rotate(-5deg);
+        }
+        
+        .video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
-            transition: transform 0.6s;
+            opacity: 0.3;
+            z-index: -1;
         }
-
-        .player-card:hover .player-image {
-            transform: scale(1.1);
+        
+        .gradient-mask {
+            background: linear-gradient(to bottom, transparent 0%, #0F1923 100%);
         }
-
-        /* Estilos específicos para imágenes de agentes */
-        .player-image.agent-jett {
-            object-position: center 20%;
-            filter: drop-shadow(0 10px 30px rgba(34, 211, 238, 0.3));
+        
+        .stat-number {
+            font-variant-numeric: tabular-nums;
         }
-
-        .player-image.agent-reyna {
-            object-position: center 10%;
-            filter: drop-shadow(0 10px 30px rgba(168, 85, 247, 0.4));
-        }
-
-        .player-image.agent-yoru {
-            object-position: center 30%;
-            filter: drop-shadow(0 10px 30px rgba(99, 102, 241, 0.3));
-        }
-
-        .player-image.agent-clove {
-            object-position: center 20%;
-            filter: drop-shadow(0 10px 30px rgba(236, 72, 153, 0.3));
-        }
-
-        .player-image.agent-brimstone {
-            object-position: center 20%;
-            filter: drop-shadow(0 10px 30px rgba(249, 115, 22, 0.3));
-        }
-
-        .player-image.agent-sova {
-            object-position: center 15%;
-            filter: drop-shadow(0 10px 30px rgba(59, 130, 246, 0.3));
-        }
-
-        .player-image.agent-deadlock {
-            object-position: center 20%;
-            filter: drop-shadow(0 10px 30px rgba(6, 182, 212, 0.3));
-        }
-
-        .player-image.agent-chamber {
-            object-position: center 20%;
-            filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.3));
-        }
-
-        .player-role-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 70, 85, 0.3);
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--red);
-            backdrop-filter: blur(10px);
-            z-index: 10;
-        }
-
-        .player-info {
-            padding: 1.5rem;
-            position: relative;
-        }
-
-        .player-name {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-        }
-
-        .player-real-name {
-            font-size: 0.9rem;
-            color: var(--gray-500);
-            margin-bottom: 1rem;
-        }
-
-        .player-agent {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--gray-400);
-        }
-
-        .player-social {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            display: flex;
-            gap: 0.5rem;
-            opacity: 0;
-            transform: translateY(10px);
+        
+        .social-btn {
             transition: all 0.3s;
         }
-
-        .player-card:hover .player-social {
-            opacity: 1;
-            transform: translateY(0);
+        
+        .social-btn:hover {
+            transform: translateY(-5px) rotate(5deg);
         }
-
-        .player-social a {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--gray-800);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
         }
-
-        .player-social a:hover {
-            background: var(--red);
-            transform: scale(1.1);
+        
+        ::-webkit-scrollbar-track {
+            background: #0F1923;
         }
-
-        /* Membership Section */
-        .membership-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(180deg, var(--black) 0%, #0f0f0f 50%, var(--black) 100%);
-            position: relative;
-            overflow: hidden;
+        
+        ::-webkit-scrollbar-thumb {
+            background: #FF4655;
+            border-radius: 5px;
         }
-
-        .membership-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at center, rgba(255, 70, 85, 0.08) 0%, transparent 70%);
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff6b7a;
         }
-
-        .membership-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10;
-        }
-
-        .membership-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .membership-header h2 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
-
-        .membership-header p {
-            color: var(--gray-400);
-            font-size: 1.125rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .membership-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        /* Valorant Rank Tier Cards */
-        .tier-card {
-            background: var(--black-light);
-            border: 2px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tier-card::before {
-            content: '';
-            position: absolute;
+        
+        .loading-screen {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--tier-color);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tier-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--tier-color);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(var(--tier-rgb), 0.15);
-        }
-
-        .tier-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Rank Colors */
-        .tier-card.iron { --tier-color: var(--rank-iron); --tier-rgb: 92, 92, 92; }
-        .tier-card.bronze { --tier-color: var(--rank-bronze); --tier-rgb: 140, 120, 83; }
-        .tier-card.silver { --tier-color: var(--rank-silver); --tier-rgb: 184, 184, 184; }
-        .tier-card.gold { --tier-color: var(--rank-gold); --tier-rgb: 212, 175, 55; }
-        .tier-card.platinum { --tier-color: var(--rank-platinum); --tier-rgb: 61, 158, 158; }
-        .tier-card.diamond { --tier-color: var(--rank-diamond); --tier-rgb: 185, 242, 255; }
-        .tier-card.ascendant { --tier-color: var(--rank-ascendant); --tier-rgb: 46, 204, 113; }
-        .tier-card.immortal { --tier-color: var(--rank-immortal); --tier-rgb: 185, 58, 247; }
-        .tier-card.radiant { --tier-color: var(--rank-radiant); --tier-rgb: 255, 247, 204; }
-
-        .rank-icon {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 1rem;
-            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            background: #0F1923;
+            z-index: 9999;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            background: rgba(var(--tier-rgb), 0.1);
-            border: 3px solid var(--tier-color);
-            color: var(--tier-color);
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            position: relative;
-        }
-
-        .rank-icon::after {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: var(--tier-color);
-            border-right-color: var(--tier-color);
-            animation: spin 10s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .tier-name {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            color: var(--tier-color);
-        }
-
-        .tier-price {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-
-        .tier-price span {
-            font-size: 1rem;
-            color: var(--gray-500);
-            font-weight: 400;
-        }
-
-        .tier-benefits {
-            list-style: none;
-            text-align: left;
-            margin-bottom: 2rem;
-        }
-
-        .tier-benefits li {
-            padding: 0.5rem 0;
-            color: var(--gray-400);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .tier-benefits li:last-child {
-            border-bottom: none;
-        }
-
-        .tier-benefits li::before {
-            content: '✓';
-            color: var(--tier-color);
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        /* Payment Methods */
-        .payment-methods {
-            display: flex;
+            align-items: center;
             flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
         }
-
-        .payment-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-decoration: none;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .payment-btn.paypal {
-            background: #0070ba;
-            color: white;
-            border-color: #0070ba;
-        }
-
-        .payment-btn.paypal:hover {
-            background: #005ea6;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 112, 186, 0.4);
-        }
-
-        .payment-btn.binance {
-            background: #f0b90b;
-            color: var(--black);
-            border-color: #f0b90b;
-        }
-
-        .payment-btn.binance:hover {
-            background: #d4a009;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(240, 185, 11, 0.4);
-        }
-
-        .payment-btn.discord {
-            background: #5865f2;
-            color: white;
-            border-color: #5865f2;
-        }
-
-        .payment-btn.discord:hover {
-            background: #4752c4;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
-        }
-
-        .payment-divider {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--gray-500);
-            font-size: 0.75rem;
-            margin: 0.5rem 0;
-        }
-
-        .payment-divider::before,
-        .payment-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .membership-note {
-            text-align: center;
-            color: var(--gray-500);
-            font-size: 0.9rem;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .membership-note strong {
-            color: var(--red);
-        }
-
-        /* Stats Section */
-        .stats-section {
-            padding: 6rem 2rem;
-            background: var(--black-light);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .stats-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            background: rgba(255, 70, 85, 0.05);
-            border-color: rgba(255, 70, 85, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--red);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--gray-500);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Support Section */
-        .support-section {
-            padding: 6rem 2rem;
-            background: var(--black);
-        }
-
-        .support-grid {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .support-card {
-            background: var(--black-light);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 2.5rem;
-            text-align: center;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .support-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(255, 70, 85, 0.05) 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .support-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 70, 85, 0.2);
-        }
-
-        .support-card:hover::before {
-            opacity: 1;
-        }
-
-        .support-icon {
+        
+        .loader {
             width: 80px;
             height: 80px;
-            margin: 0 auto 1.5rem;
+            border: 4px solid #1E293B;
+            border-top: 4px solid #FF4655;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 700;
+            animation: spin 1s linear infinite;
         }
-
-        .support-card.paypal .support-icon {
-            background: rgba(0, 112, 186, 0.1);
-            color: #0070ba;
-            border: 2px solid rgba(0, 112, 186, 0.3);
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        .support-card.crypto .support-icon {
-            background: rgba(240, 185, 11, 0.1);
-            color: #f0b90b;
-            border: 2px solid rgba(240, 185, 11, 0.3);
-        }
-
-        .support-card h3 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .support-card p {
-            color: var(--gray-500);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        .support-detail {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            color: var(--gray-400);
-            word-break: break-all;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--black);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 4rem 2rem 2rem;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .footer-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .footer-social a {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--gray-900);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray-400);
-            text-decoration: none;
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-social a:hover {
-            background: var(--red);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--gray-500);
-            font-size: 0.875rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            color: var(--gray-500);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--red);
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .membership-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem 1.5rem;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .hero-stats {
-                gap: 2rem;
-            }
-            
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .membership-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .support-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-top {
-                flex-direction: column;
-                gap: 2rem;
-                text-align: center;
-            }
-            
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
+        
+        .reveal-text {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Rank badge in player card */
-        .player-rank {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.25rem 0.5rem;
-            background: rgba(var(--tier-rgb), 0.1);
-            border: 1px solid var(--tier-color);
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--tier-color);
-            margin-left: 0.5rem;
-            text-transform: uppercase;
         }
     </style>
 </head>
-<body>
+<body class="font-rajdhani antialiased">
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loader">
+        <div class="loader mb-4"></div>
+        <div class="text-valorant-red font-orbitron text-xl tracking-widest animate-pulse">CARGANDO...</div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <div class="logo-icon">CA</div>
-                Cross Aim
+    <nav class="fixed w-full z-50 bg-valorant-dark/90 backdrop-blur-md border-b border-valorant-red/30 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-valorant-red rounded-lg flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform">
+                        <span class="font-orbitron font-bold text-2xl text-white">F</span>
+                    </div>
+                    <div>
+                        <div class="font-orbitron font-bold text-2xl text-white tracking-wider">FEISS</div>
+                        <div class="text-xs text-valorant-red tracking-widest">CROSSAIM COACHING</div>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="text-gray-300 hover:text-valorant-red transition-colors font-semibold tracking-wide">SOBRE MÍ</a>
+                    <a href="#services" class="text-gray-300 hover:text-valorant-red transition-colors font-semibold tracking-wide">SERVICIOS</a>
+                    <a href="#plans" class="text-gray-300 hover:text-valorant-red transition-colors font-semibold tracking-wide">PLANES</a>
+                    <a href="#community" class="text-gray-300 hover:text-valorant-red transition-colors font-semibold tracking-wide">COMUNIDAD</a>
+                    <a href="https://www.paypal.com/paypalme/JhoanPedroza" target="_blank" class="valorant-btn bg-valorant-red text-white px-6 py-3 font-bold tracking-wider hover:bg-red-600 transition-colors clip-slant">
+                        <i class="fab fa-paypal mr-2"></i> PAGAR
+                    </a>
+                </div>
+                
+                <button class="md:hidden text-white text-2xl" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#roster">Roster</a></li>
-                <li><a href="#membership">Membership</a></li>
-                <li><a href="#support">Support</a></li>
-            </ul>
-            <div class="nav-right">
-                <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="social-icon" title="Discord">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
-                    </svg>
-                </a>
-                <a href="https://www.instagram.com/feispla/" target="_blank" class="social-icon" title="Instagram">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/>
-                    </svg>
-                </a>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-valorant-dark border-t border-valorant-red/30" id="mobileMenu">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#about" class="block px-3 py-2 text-gray-300 hover:text-valorant-red">SOBRE MÍ</a>
+                <a href="#services" class="block px-3 py-2 text-gray-300 hover:text-valorant-red">SERVICIOS</a>
+                <a href="#plans" class="block px-3 py-2 text-gray-300 hover:text-valorant-red">PLANES</a>
+                <a href="#community" class="block px-3 py-2 text-gray-300 hover:text-valorant-red">COMUNIDAD</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="team-badge">
-                <span style="color: var(--red);">●</span> Professional Valorant Team
-            </div>
-            <h1>Cross Aim</h1>
-            <p class="hero-subtitle">Precision • Strategy • Dominance</p>
-            
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-number">8</div>
-                    <div class="hero-stat-label">Players</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-number">3</div>
-                    <div class="hero-stat-label">Duelists</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-number">1</div>
-                    <div class="hero-stat-label">Goal</div>
-                </div>
-            </div>
-
-            <div class="hero-cta">
-                <a href="#roster" class="btn btn-primary">Meet the Team</a>
-                <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="btn btn-outline">Join Discord</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Roster Section -->
-    <section class="roster-section" id="roster">
-        <div class="section-header">
-            <div class="section-title-group">
-                <h2>Active Roster</h2>
-                <h3>Meet the Squad</h3>
-            </div>
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-valorant-red/20 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-valorant-purple/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-valorant-neon/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
         </div>
         
-        <div class="roster-grid">
-            <!-- Player 1 - K1AN ST (Jett) -->
-            <div class="player-card">
-                <div class="player-image-container">
-                    <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/94d795777116652279c4de73ba19976639c12f5d-1920x1080.jpg" alt="Jett" class="player-image agent-jett">
-                    <div class="player-role-badge">Duelist</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">K1AN ST</h3>
-                    <p class="player-real-name">Jett Main</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Jett</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="#" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Player 2 - FEISpla (Reyna) -->
-            <div class="player-card" style="border: 2px solid rgba(168, 85, 247, 0.3);">
-                <div class="player-image-container">
-                    <img src="https://static.invenglobal.com/upload/image/2020/05/30/i1590864720143467.jpeg" alt="Reyna" class="player-image agent-reyna">
-                    <div class="player-role-badge" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.5); background: rgba(0,0,0,0.9);">Duelist • IGL</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name" style="color: #a855f7;">FEISpla</h3>
-                    <p class="player-real-name">Reyna Main • Captain</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Reyna</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="https://www.twitch.tv/feispla" target="_blank" title="Twitch" style="background: #9146ff;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
-                        </a>
-                        <a href="https://www.youtube.com/@FEISPLA" target="_blank" title="YouTube" style="background: #ff0000;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                        </a>
-                        <a href="https://kick.com/fe1ss" target="_blank" title="Kick" style="background: #53fc18; color: black;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Player 3 - Sanstiago214 (Yoru) -->
-            <div class="player-card">
-                <div class="player-image-container">
-                    <img src="https://weareroyale.com/wp-content/uploads/case-studies/r/riot/riot-valorant-yoru/valorant_agent15_featured_500x700.jpg" alt="Yoru" class="player-image agent-yoru">
-                    <div class="player-role-badge" style="color: #6366f1; border-color: rgba(99, 102, 241, 0.3);">Duelist</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">Sanstiago214</h3>
-                    <p class="player-real-name">Yoru Main</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Yoru</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="#" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Player 4 - Grangerr (Clove) -->
-            <div class="player-card">
-                <div class="player-image-container">
-                    <img src="https://cdnb.artstation.com/p/assets/images/images/072/643/027/large/viviane-herzog-artblast-clove-pose.jpg" alt="Clove" class="player-image agent-clove">
-                    <div class="player-role-badge" style="color: #ec4899; border-color: rgba(236, 72, 153, 0.3);">Controller</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">Grangerr</h3>
-                    <p class="player-real-name">Clove / Brimstone</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Clove</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="#" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Player 5 - Stealthlink (Brimstone) -->
-            <div class="player-card">
-                <div class="player-image-container">
-                    <img src="https://cdna.artstation.com/p/assets/images/images/031/227/402/large/envar-studio-brimstone-single.jpg" alt="Brimstone" class="player-image agent-brimstone">
-                    <div class="player-role-badge" style="color: #f97316; border-color: rgba(249, 115, 22, 0.3);">Controller</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">Stealthlink</h3>
-                    <p class="player-real-name">Brimstone / Clove</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Brimstone</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="#" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Player 6 - FarminXd (Sova) -->
-            <div class="player-card">
-                <div class="player-image-container">
-                    <img src="https://cdnb.artstation.com/p/assets/images/images/025/119/161/large/ke-su-sova-keyart-final-1.jpg" alt="Sova" class="player-image agent-sova">
-                    <div class="player-role-badge" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.3);">Initiator</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">FarminXd</h3>
-                    <p class="player-real-name">Sova Main</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Sova</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="#" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Player 7 - Tavoalbrnoz (Deadlock) -->
-            <div class="player-card">
-                <div class="player-image-container">
-                    <img src="https://cdna.artstation.com/p/assets/images/images/064/936/154/large/suke-deadlok418-2.jpg" alt="Deadlock" class="player-image agent-deadlock">
-                    <div class="player-role-badge" style="color: #06b6d4; border-color: rgba(6, 182, 212, 0.3);">Sentinel</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">Tavoalbrnoz</h3>
-                    <p class="player-real-name">Deadlock / Cypher</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Deadlock</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="#" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Player 8 - Nickname (Chamber/Jett) - NUEVO -->
-            <div class="player-card" style="border: 2px solid rgba(255, 215, 0, 0.3);">
-                <div class="player-image-container">
-                    <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/94d795777116652279c4de73ba19976639c12f5d-1920x1080.jpg" alt="Jett" class="player-image agent-jett">
-                    <div class="player-role-badge" style="color: #ffd700; border-color: rgba(255, 215, 0, 0.5); background: rgba(0,0,0,0.9);">Sentinel</div>
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name" style="color: #ffd700;">Nickname</h3>
-                    <p class="player-real-name">Chamber / Jett</p>
-                    <div class="player-agent">
-                        <span>Primary Agent: Chamber</span>
-                    </div>
-                    <div class="player-social">
-                        <a href="#" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Membership Section - ACTUALIZADA CON RANGOS VALORANT -->
-    <section class="membership-section" id="membership">
-        <div class="membership-content">
-            <div class="membership-header">
-                <h2>Support Cross Aim</h2>
-                <p>Únete a nuestra comunidad exclusiva y obtén beneficios únicos mientras apoyas al equipo. Cada tier está basado en los rangos competitivos de Valorant.</p>
-            </div>
-
-            <div class="membership-grid">
-                <!-- Tier 1 - Silver -->
-                <div class="tier-card silver">
-                    <div class="rank-icon">S</div>
-                    <h3 class="tier-name">Silver</h3>
-                    <div class="tier-price">$5<span>/mes</span></div>
-                    <ul class="tier-benefits">
-                        <li>Rol exclusivo en Discord "Silver Supporter"</li>
-                        <li>Acceso al canal general de supporters</li>
-                        <li>Emojis personalizados básicos</li>
-                        <li>Mención en agradecimientos mensuales</li>
-                        <li>Acceso a wallpapers exclusivos</li>
-                    </ul>
-                    <div class="payment-methods">
-                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
-                            Pagar con PayPal
-                        </a>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                            Pagar con Binance
-                        </a>
-                        <div class="payment-divider">o</div>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                            Más métodos en Discord
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Tier 2 - Gold -->
-                <div class="tier-card gold">
-                    <div class="rank-icon">G</div>
-                    <h3 class="tier-name">Gold</h3>
-                    <div class="tier-price">$15<span>/mes</span></div>
-                    <ul class="tier-benefits">
-                        <li>Todos los beneficios Silver</li>
-                        <li>Rol "Gold Supporter" en Discord</li>
-                        <li>Sesión de coaching grupal quincenal</li>
-                        <li>Acceso a VODs de scrims del equipo</li>
-                        <li>Prioridad en partidas custom</li>
-                        <li>Descuento 10% en merchandise</li>
-                    </ul>
-                    <div class="payment-methods">
-                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
-                            Pagar con PayPal
-                        </a>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                            Pagar con Binance
-                        </a>
-                        <div class="payment-divider">o</div>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                            Más métodos en Discord
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Tier 3 - Platinum -->
-                <div class="tier-card platinum">
-                    <div class="rank-icon">P</div>
-                    <h3 class="tier-name">Platinum</h3>
-                    <div class="tier-price">$25<span>/mes</span></div>
-                    <ul class="tier-benefits">
-                        <li>Todos los beneficios Gold</li>
-                        <li>Rol "Platinum Supporter" en Discord</li>
-                        <li>Coaching 1v1 mensual (45 min)</li>
-                        <li>Review de partidas personales</li>
-                        <li>Acceso a entrenamientos del equipo (observador)</li>
-                        <li>Descuento 20% en merchandise</li>
-                        <li>Invitación a torneos privados</li>
-                    </ul>
-                    <div class="payment-methods">
-                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
-                            Pagar con PayPal
-                        </a>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                            Pagar con Binance
-                        </a>
-                        <div class="payment-divider">o</div>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                            Más métodos en Discord
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Tier 4 - Immortal -->
-                <div class="tier-card immortal">
-                    <div class="rank-icon">IM</div>
-                    <h3 class="tier-name">Immortal</h3>
-                    <div class="tier-price">$50<span>/mes</span></div>
-                    <ul class="tier-benefits">
-                        <li>Todos los beneficios Platinum</li>
-                        <li>Rol "Immortal Elite" en Discord</li>
-                        <li>Coaching 1v1 quincenal (1 hora)</li>
-                        <li>Análisis de gameplay en vivo</li>
-                        <li>Acceso a scrims como espectador</li>
-                        <li>Partidas privadas con el roster (2 por mes)</li>
-                        <li>Merchandise exclusivo Immortal</li>
-                        <li>Sesión mensual con el IGL (FEISpla)</li>
-                    </ul>
-                    <div class="payment-methods">
-                        <a href="https://paypal.me/JhoanPedroza" target="_blank" class="payment-btn paypal">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.266-1.278.196-2.345-.207-3.004z"/></svg>
-                            Pagar con PayPal
-                        </a>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn binance">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                            Pagar con Binance
-                        </a>
-                        <div class="payment-divider">o</div>
-                        <a href="https://discord.gg/PN63Qx9nuN" target="_blank" class="payment-btn discord">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                            Más métodos en Discord
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="membership-note">
-                <strong>💡 Nota:</strong> Todos los pagos se procesan de forma segura. Los beneficios se activan dentro de las 24 horas posteriores a la confirmación del pago. 
-                Para más información sobre métodos de pago alternativos (Nequi, Daviplata, PSE, etc.), contáctanos en <strong>Discord</strong>.
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">8</div>
-                <div class="stat-label">Active Players</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">3</div>
-                <div class="stat-label">Duelists</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">4</div>
-                <div class="stat-label">Roles Covered</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">∞</div>
-                <div class="stat-label">Potential</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Support Section -->
-    <section class="support-section" id="support">
-        <div class="section-header" style="margin-bottom: 3rem;">
-            <div class="section-title-group" style="text-align: center; margin: 0 auto;">
-                <h2>Support the Team</h2>
-                <h3>Help Us Grow</h3>
-            </div>
-        </div>
-        
-        <div class="support-grid">
-            <div class="support-card paypal">
-                <div class="support-icon">P</div>
-                <h3>PayPal</h3>
-                <p>Secure international payments</p>
-                <div class="support-detail">paypal.me/JhoanPedroza</div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-6 inline-block">
+                <span class="px-4 py-2 bg-valorant-red/20 border border-valorant-red text-valorant-red text-sm font-bold tracking-widest rounded-full animate-pulse">
+                    <i class="fas fa-circle text-xs mr-2 animate-pulse"></i>COACHING PROFESIONAL 4K HD
+                </span>
             </div>
             
-            <div class="support-card crypto">
-                <div class="support-icon">₿</div>
-                <h3>Binance</h3>
-                <p>Crypto transfers & trading</p>
-                <div class="support-detail">ID: 1034728429</div>
+            <h1 class="font-orbitron text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight reveal-text">
+                <span class="block text-white glitch" data-text="DOMINA EL">DOMINA EL</span>
+                <span class="block text-valorant-red neon-text">VALORANT</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto font-light reveal-text">
+                Coaching <span class="text-valorant-neon font-semibold"/span> con Feiss. 
+                jugador profesional, streamer y coach oficial de <span class="text-valorant-red font-bold">CrossAim Venezuela</span>.
+                Lleva tu aim al siguiente nivel.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 reveal-text">
+                <a href="https://discord.gg/6YmfQnbKG3" target="_blank" class="valorant-btn group bg-valorant-red text-white px-8 py-4 text-lg font-bold tracking-wider hover:bg-red-600 transition-all clip-slant flex items-center">
+                    <i class="fab fa-discord mr-3 text-2xl group-hover:rotate-12 transition-transform"></i>
+                    UNIRSE A DISCORD
+                </a>
+                <a href="#plans" class="valorant-btn border-2 border-valorant-neon text-valorant-neon px-8 py-4 text-lg font-bold tracking-wider hover:bg-valorant-neon hover:text-valorant-dark transition-all clip-slant flex items-center">
+                    <i class="fas fa-play mr-3"></i>
+                    VER PLANES
+                </a>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto reveal-text">
+                <div class="glass-panel p-6 rounded-lg card-hover">
+                    <div class="text-4xl font-orbitron font-bold text-valorant-red stat-number" data-target="15">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider">JUGADORES COACHADOS</div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg card-hover">
+                    <div class="text-4xl font-orbitron font-bold text-valorant-neon stat-number" data-target="50">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider">EQUIPOS ENTRENADOS</div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg card-hover">
+                    <div class="text-4xl font-orbitron font-bold text-valorant-purple stat-number" data-target="3">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider">AÑOS EXPERIENCIA</div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg card-hover">
+                    <div class="text-4xl font-orbitron font-bold text-valorant-gold stat-number" data-target="100">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider">% DEDICACIÓN</div>
+                </div>
             </div>
         </div>
         
-        <div style="text-align: center; margin-top: 3rem;">
-            <a href="https://www.binance.com/referral/earn-together/refer2earn-usdc/claim?hl=es-LA&ref=GRO_28502_VP3S5" target="_blank" class="btn btn-primary" style="background: linear-gradient(135deg, #f0b90b, #d4a009);">
-                🎁 Binance Referral Program
-            </a>
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-3xl text-valorant-red"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative reveal-text">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-valorant-red to-valorant-purple opacity-30 blur-xl rounded-full"></div>
+                    <div class="relative glass-panel rounded-2xl overflow-hidden border-2 border-valorant-red/50">
+                        <div class="aspect-square bg-gradient-to-br from-valorant-gray to-valorant-dark flex items-center justify-center relative overflow-hidden group">
+                            <!-- Placeholder for Feispla Image -->
+                            <div class="text-center z-10">
+                                <i class="fas fa-user-astronaut text-8xl text-valorant-red mb-4 group-hover:scale-110 transition-transform"></i>
+                                <p class="text-gray-400">Foto de Feiss</p>
+                            </div>
+                            <div class="absolute inset-0 bg-valorant-red/10 group-hover:bg-valorant-red/20 transition-colors"></div>
+                            
+                            <!-- Rank Badge Overlay -->
+                            <div class="absolute top-4 right-4 bg-valorant-gold text-valorant-dark px-3 py-1 rounded font-bold text-sm transform rotate-3">
+                                RADIANT
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Links Floating -->
+                    <div class="absolute -right-4 top-1/2 transform -translate-y-1/2 space-y-3">
+                        <a href="https://www.twitch.tv/feispla" target="_blank" class="social-btn block w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-purple-500">
+                            <i class="fab fa-twitch text-xl"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@feispla" target="_blank" class="social-btn block w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-red-500">
+                            <i class="fab fa-youtube text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/feispla/" target="_blank" class="social-btn block w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center text-white shadow-lg hover:from-purple-500 hover:to-pink-400">
+                            <i class                             <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="reveal-text">
+                    <h2 class="font-orbitron text-4xl md:text-5xl font-bold mb-6">
+                        <span class="text-white">CONOCE A</span>
+                        <span class="text-valorant-red neon-text">FEISPLA</span>
+                    </h2>
+                    
+                    <div class="space-y-4 text-lg text-gray-300 mb-8">
+                        <p>
+                            <i class="fas fa-gamepad text-valorant-red mr-2"></i>
+                            Ex-jugador profesional de Valorant con experiencia en escena competitiva latinoamericana.
+                        </p>
+                        <p>
+                            <i class="fas fa-video text-valorant-neon mr-2"></i>
+                            Streamer en <a href="https://www.twitch.tv/feispla" target="_blank" class="text-purple-400 hover:text-purple-300 underline">Twitch</a> y creador de contenido educativo en <a href="https://www.youtube.com/@feispla" target="_blank" class="text-red-400 hover:text-red-300 underline">YouTube</a>.
+                        </p>
+                        <p>
+                            <i class="fas fa-users text-valorant-purple mr-2"></i>
+                            Coach oficial del equipo <span class="text-valorant-red font-bold">Cross Aim Venezuela</span>, formando talento nacional.
+                        </p>
+                        <p>
+                            <i class="fas fa-trophy text-valorant-gold mr-2"></i>
+                            Especialista en aim training, estrategias de equipo y desarrollo de jugadores desde nivel principiante hasta Radiant.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="glass-panel p-4 rounded-lg border-l-4 border-valorant-red">
+                            <div class="text-2xl font-bold text-white">4K HD</div>
+                            <div class="text-sm text-gray-400">Calidad de enseñanza</div>
+                        </div>
+                        <div class="glass-panel p-4 rounded-lg border-l-4 border-valorant-neon">
+                            <div class="text-2xl font-bold text-white">100%</div>
+                            <div class="text-sm text-gray-400">Personalizado</div>
+                        </div>
+                        <div class="glass-panel p-4 rounded-lg border-l-4 border-valorant-purple">
+                            <div class="text-2xl font-bold text-white">24/7</div>
+                            <div class="text-sm text-gray-400">Soporte Discord</div>
+                        </div>
+                        <div class="glass-panel p-4 rounded-lg border-l-4 border-valorant-gold">
+                            <div class="text-2xl font-bold text-white">VCT</div>
+                            <div class="text-sm text-gray-400">Metodología pro</div>
+                        </div>
+                    </div>
+                    
+                    <a href="https://discord.gg/6YmfQnbKG3" target="_blank" class="inline-flex items-center text-valorant-neon hover:text-white transition-colors font-semibold">
+                        <i class="fab fa-discord mr-2"></i>
+                        Únete a la comunidad Cross Aim
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-valorant-gray/30 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-text">
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold mb-4">
+                    <span class="text-white">SERVICIOS</span>
+                    <span class="text-valorant-red neon-text">PROFESIONALES</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Entrenamiento completo adaptado a tu nivel y objetivos. Desde aim mecánico hasta estrategias de equipo nivel VCT.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="glass-panel rounded-2xl p-8 card-hover relative overflow-hidden group reveal-text">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-valorant-red/10 rounded-full blur-2xl group-hover:bg-valorant-red/20 transition-colors"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-valorant-red/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-crosshairs text-3xl text-valorant-red"></i>
+                        </div>
+                        <h3 class="font-orbitron text-2xl font-bold text-white mb-4">AIM TRAINING 4K</h3>
+                        <ul class="space-y-3 text-gray-300 mb-6">
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-2"></i> Rutinas personalizadas Kovaak's/Aim Lab</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-2"></i> Análisis de sensibilidad (eDPI óptimo)</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-2"></i> Técnica de counter-strafe avanzada</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-2"></i> Spray control por arma</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-2"></i> Pre-aims y crosshair placement</li>
+                        </ul>
+                        <div class="text-valorant-neon font-bold text-lg">Incluido en todos los planes</div>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="glass-panel rounded-2xl p-8 card-hover relative overflow-hidden group reveal-text">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-valorant-neon/10 rounded-full blur-2xl group-hover:bg-valorant-neon/20 transition-colors"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-valorant-neon/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-eye text-3xl text-valorant-neon"></i>
+                        </div>
+                        <h3 class="font-orbitron text-2xl font-bold text-white mb-4">VOD REVIEW HD</h3>
+                        <ul class="space-y-3 text-gray-300 mb-6">
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-neon mr-2"></i> Análisis frame por frame</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-neon mr-2"></i> Identificación de errores decisionales</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-neon mr-2"></i> Evaluación de posicionamiento</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-neon mr-2"></i> Análisis de economía y buys</li>
+                            <li class="flex items-center"><i class="fas fa-check text-valorant-neon mr-2"></i> Plan de mejora personalizado</li>
+                        </ul>
+                        <div class="text-valorant-neon font-bold text-lg">Incluido en Plan Pro y Elite</div>
+                    </div>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="glass-panel rounded-2xl p-8 card-hover relative overflow-hidden group reveal-text">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-valorant-purple/10 rounded-full blur-2xl group-hover:bg-valorant-purple/20 transition-colors"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-valorant-purple/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-users text-3xl text-valorant-purple"></i>
+                        </div>
+                   
+            
+            <!-- Additional Services -->
+            <div class="mt-12 grid md:grid-cols-2 gap-8">
+                <div class="glass-panel rounded-2xl p-6 flex items-center space-x-6 reveal-text">
+                    <div class="w-20 h-20 bg-valorant-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-brain text-4xl text-valorant-gold"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-orbitron text-xl font-bold text-white mb-2">PSICOLOGÍA COMPETITIVA</h4>
+                        <p class="text-gray-400">Manejo de tilt, rutinas mentales, visualización y desarrollo de mentalidad ganadora. Técnicas usadas por pros de VCT.</p>
+                    </div>
+                </div>
+                
+                <div class="glass-panel rounded-2xl p-6 flex items-center space-x-6 reveal-text">
+                    <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-map-marked-alt text-4xl text-green-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-orbitron text-xl font-bold text-white mb-2">LINEUPS Y UTILIDAD</h4>
+                        <p class="text-gray-400">Lineups 4K HD para Sova, Viper, Killjoy y más. Setups de post-plant, one-ways y utilidad avanzada por mapa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="plans" class="py-20 relative overflow-hidden">
+        <!-- Background Effect -->
+        <div class="absolute inset-0 bg-gradient-to-b from-valorant-dark via-valorant-gray/20 to-valorant-dark"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 reveal-text">
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold mb-4">
+                    <span class="text-white">PLANES DE</span>
+                    <span class="text-valorant-red neon-text">COACHING</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Elige el plan que se adapte a tus objetivos. Todos incluyen acceso al Discord privado.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 items-center">
+                <!-- Plan 1: Iron -->
+                <div class="glass-panel rounded-2xl p-8 card-hover reveal-text border border-gray-600">
+                    <div class="text-center mb-6">
+                        <h3 class="font-orbitron text-2xl font-bold text-gray-300 mb-2">PLAN IRON</h3>
+                        <div class="text-4xl font-bold text-white mb-2">$15<span class="text-lg text-gray-400">/mes</span></div>
+                        <div class="text-sm text-gray-500">Para jugadores iniciando</div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> 1 Clase individual (1h)</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> Rutina de aim básica</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> Análisis de configuración</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> Acceso Discord comunidad</li>
+                        <li class="flex items-center text-gray-500"><i class="fas fa-times mr-3"></i> VOD reviews</li>
+                        <li class="flex items-center text-gray-500"><i class="fas fa-times mr-3"></i> Clases en vivo</li>
+                    </ul>
+                    
+                    <a href="https://www.paypal.com/paypalme/JhoanPedroza/15" target="_blank" class="block w-full py-4 border-2 border-gray-600 text-gray-300 font-bold text-center rounded-lg hover:border-valorant-red hover:text-valorant-red transition-all">
+                        SELECCIONAR
+                    </a>
+                </div>
+                
+                <!-- Plan 2: Radiant (Featured) -->
+                <div class="glass-panel rounded-2xl p-8 card-hover reveal-text border-2 border-valorant-red relative transform md:scale-110 z-10 shadow-2xl shadow-valorant-red/20">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-valorant-red text-white px-4 py-1 rounded-full text-sm font-bold tracking-wider">
+                        MÁS POPULAR
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <h3 class="font-orbitron text-2xl font-bold text-valorant-red mb-2">PLAN RADIANT</h3>
+                        <div class="text-5xl font-bold text-white mb-2">$35<span class="text-lg text-gray-400">/mes</span></div>
+                        <div class="text-sm text-valorant-neon">Recomendado para subir a Immortal</div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> 4 Clases individuales (1h c/u)</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> 2 VOD reviews detallados</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> Rutina aim personalizada</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> Guías de lineups HD</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> Acceso Discord privado</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-red mr-3"></i> Soporte WhatsApp 24/7</li>
+                    </ul>
+                    
+                    <a href="https://www.paypal.com/paypalme/JhoanPedroza/35" target="_blank" class="block w-full py-4 bg-valorant-red text-white font-bold text-center rounded-lg hover:bg-red-600 transition-all valorant-btn">
+                        EMPEZAR AHORA
+                    </a>
+                </div>
+                
+                <!-- Plan 3: VCT Pro -->
+                <div class="glass-panel rounded-2xl p-8 card-hover reveal-text border border-valorant-gold">
+                    <div class="text-center mb-6">
+                        <h3 class="font-orbitron text-2xl font-bold text-valorant-gold mb-2">PLAN VCT PRO</h3>
+                        <div class="text-4xl font-bold text-white mb-2">$70<span class="text-lg text-gray-400">/mes</span></div>
+                        <div class="text-sm text-gray-500">Para jugadores serios y equipos</div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-gold mr-3"></i> Clases ilimitadas</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-gold mr-3"></i> VOD reviews ilimitados</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-gold mr-3"></i> Coaching mental 1a1</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-gold mr-3"></i> Análisis de scrims en vivo</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-gold mr-3"></i> Preparación torneos</li>
+                        <li class="flex items-center"><i class="fas fa-check text-valorant-gold mr-3"></i> Priority support</li>
+                    </ul>
+                    
+                    <a href="https://www.paypal.com/paypalme/JhoanPedroza/70" target="_blank" class="block w-full py-4 border-2 border-valorant-gold text-valorant-gold font-bold text-center rounded-lg hover:bg-valorant-gold hover:text-valorant-dark transition-all">
+                        SER PRO
+                    </a>
+                </div>
+            </div>
+            
+        
+            
+            <!-- Payment Methods -->
+            <div class="mt-12 text-center reveal-text">
+                <p class="text-gray-400 mb-4">Métodos de pago aceptados:</p>
+                <div class="flex justify-center items-center space-x-6">
+                    <div class="flex items-center space-x-2 text-2xl text-blue-400">
+                        <i class="fab fa-paypal"></i>
+                        <span class="text-sm font-semibold">PayPal</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-2xl text-yellow-400">
+                        <i class="fas fa-bolt"></i>
+                        <span class="text-sm font-semibold">Binance</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-2xl text-green-400">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span class="text-sm font-semibold">Reserve</span>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-4">Para pagos en Bs (Venezuela) o métodos alternativos, contactar por Discord</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="py-20 bg-valorant-gray/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-text">
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold mb-4">
+                    <span class="text-white">ÚNETE A LA</span>
+                    <span class="text-valorant-red neon-text">COMUNIDAD</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Más de 500 jugadores en nuestra comunidad de Discord. Clases, scrims.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Discord Widget -->
+                <div class="reveal-text">
+                    <div class="discord-widget bg-[#36393f] rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-[#202225] p-4 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-valorant-red rounded-xl flex items-center justify-center">
+                                    <i class="fab fa-discord text-2xl text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-white">CrossAim </div>
+                                    <div class="text-xs text-green-400 flex items-center">
+                                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                                        124 usuarios online
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://discord.gg/6YmfQnbKG3" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold text-sm transition-colors">
+                                Unirse
+                            </a>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">F</div>
+                                <div class="bg-[#40444b] rounded-lg p-3 text-gray-100 text-sm">
+                                    <div class="font-semibold text-purple-400 mb-1">FEISS</div>
+                                    ¡Nueva clase de aim training hoy a las 8PM! 🎯 Quien se apunta?
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">C</div>
+                                <div class="bg-[#40444b] rounded-lg p-3 text-gray-100 text-sm">
+                                    <div class="font-semibold text-blue-400 mb-1">mMember</div>
+                                    Yo voy! Necesito mejorar mi crosshair placement 😅
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-valorant-red rounded-full flex items-center justify-center text-white font-bold">S</div>
+                                <div class="bg-[#40444b] rounded-lg p-3 text-gray-100 text-sm">
+                                    <div class="font-semibold text-valorant-red mb-1">ScrimCROSS</div>
+                                    🏆 Scrim 5v5 iniciando en 30 minutos. Reacciona con ✅ para participar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-[#202225] p-4 text-center text-xs text-gray-400">
+                            Canal: #announcements • Última actualización: ahora mismo
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-center space-x-4">
+                        <a href="https://discord.gg/6YmfQnbKG3" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-discord text-2xl text-[#5865F2]"></i>
+                            <span>discord.gg/6YmfQnbKG3</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="space-y-6 reveal-text">
+                    <h3 class="font-orbitron text-3xl font-bold text-white mb-6">SÍGUEME EN REDES</h3>
+                    
+                    <a href="https://www.twitch.tv/feispla" target="_blank" class="block glass-panel p-6 rounded-xl hover:bg-purple-900/20 transition-all group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fab fa-twitch text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-xl text-white">Twitch</div>
+                                    <div class="text-purple-400 text-sm">twitch.tv/feispla</div>
+                                    <div class="text-xs text-gray-400 mt-1">Streams Lunes, Miércoles y Viernes 7PM</div>
+                                </div>
+                            </div>
+                            <i class="fas fa-external-link-alt text-gray-500 group-hover:text-white transition-colors"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.youtube.com/@feispla" target="_blank" class="block glass-panel p-6 rounded-xl hover:bg-red-900/20 transition-all group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fab fa-youtube text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-xl text-white">YouTube</div>
+                                    <div class="text-red-400 text-sm">youtube.com/@feispla</div>
+                                    <div class="text-xs text-gray-400 mt-1">Guías, VOD reviews y highlights 4K</div>
+                                </div>
+                            </div>
+                            <i class="fas fa-external-link-alt text-gray-500 group-hover:text-white transition-colors"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.instagram.com/feispla/" target="_blank" class="block glass-panel p-6 rounded-xl hover:bg-pink-900/20 transition-all group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fab fa-instagram text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-xl text-white">Instagram</div>
+                                    <div class="text-pink-400 text-sm">@feispla</div>
+                                    <div class="text-xs text-gray-400 mt-1">Behind the scenes y tips rápidos</div>
+                                </div>
+                            </div>
+                            <i class="fas fa-external-link-alt text-gray-500 group-hover:text-white transition-colors"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.instagram.com/crossaimg/" target="_blank" class="block glass-panel p-6 rounded-xl hover:bg-blue-900/20 transition-all group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-users text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-xl text-white">CrossAim</div>
+                                    <div class="text-blue-400 text-sm">@crossaimg</div>
+                                    <div class="text-xs text-gray-400 mt-1">Equipo oficial de Venezuela</div>
+                                </div>
+                            </div>
+                            <i class="fas fa-external-link-alt text-gray-500 group-hover:text-white transition-colors"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-valorant-red/20 to-valorant-purple/20"></div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10 reveal-text">
+            <h2 class="font-orbitron text-4xl md:text-6xl font-bold text-white mb-6">
+                ¿LISTO PARA SUBIR DE RANGO?
+            </h2>
+            <p class="text-xl text-gray-300 mb-8">
+                Únete a <span class="text-valorant-red font-bold">+15 jugadores</span> que ya mejoraron su aim con mi metodología. 
+                De Iron a Radiant, el camino empieza aquí.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://discord.gg/6YmfQnbKG3" target="_blank" class="valorant-btn bg-[#5865F2] text-white px-8 py-4 text-lg font-bold rounded-lg hover:bg-[#4752C4] transition-all flex items-center justify-center">
+                    <i class="fab fa-discord mr-3 text-2xl"></i>
+                    EMPEZAR EN DISCORD
+                </a>
+                <a href="https://www.paypal.com/paypalme/JhoanPedroza" target="_blank" class="valorant-btn bg-valorant-red text-white px-8 py-4 text-lg font-bold rounded-lg hover:bg-red-600 transition-all flex items-center justify-center">
+                    <i class="fab fa-paypal mr-3 text-2xl"></i>
+                    PAGAR CON PAYPAL
+                </a>
+            </div>
+            <p class="mt-6 text-gray-400 text-sm">
+                ID Discord: <span class="text-valorant-neon font-mono">1244864184513069156</span> • 
+                Respuesta en menos de 24h garantizada
+            </p>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-top">
-                <div class="footer-logo">
-                    <div class="logo-icon">CA</div>
-                    Cross Aim
+    <footer class="bg-valorant-dark border-t border-valorant-red/30 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-valorant-red rounded-lg flex items-center justify-center">
+                            <span class="font-orbitron font-bold text-xl text-white">F</span>
+                        </div>
+                        <div>
+                            <div class="font-orbitron font-bold text-lg text-white">FEISS</div>
+                            <div class="text-xs text-gray-500">COACHING</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Coaching profesional de Valorant para Latinoamérica. 
+                        Especialista en aim training
+                    </p>
                 </div>
-                <div class="footer-social">
-                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank" title="Discord">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                    </a>
-                    <a href="https://www.instagram.com/feispla/" target="_blank" title="Instagram">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg>
-                    </a>
-                    <a href="https://www.twitch.tv/feispla" target="_blank" title="Twitch">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
-                    </a>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">SERVICIOS</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#services" class="hover:text-valorant-red transition-colors">Aim Training 4K</a></li>
+                        <li><a href="#services" class="hover:text-valorant-red transition-colors">VOD Review HD</a></li>
+                        <li><a href="#services" class="hover:text-valorant-red transition-colors">Coaching de Equipo</a></li>
+                        <li><a href="#services" class="hover:text-valorant-red transition-colors">Psicología Competitiva</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">COMUNIDAD</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="https://discord.gg/6YmfQnbKG3" target="_blank" class="hover:text-valorant-red transition-colors">Discord Cross Aim</a></li>
+                        <li><a href="https://www.twitch.tv/feispla" target="_blank" class="hover:text-valorant-red transition-colors">Twitch</a></li>
+                        <li><a href="https://www.youtube.com/@feispla" target="_blank" class="hover:text-valorant-red transition-colors">YouTube</a></li>
+                        <li><a href="https://www.instagram.com/feispla/" target="_blank" class="hover:text-valorant-red transition-colors">Instagram</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">CONTACTO</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-center"><i class="fab fa-discord mr-2 text-[#5865F2]"></i> ID: 1244864184513069156</li>
+                        <li class="flex items-center"><i class="fab fa-paypal mr-2 text-blue-400"></i> paypal.me/JhoanPedroza</li>
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-valorant-red"></i> Venezuela</li>
+                    </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Cross Aim. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#roster">Roster</a>
-                    <a href="#membership">Membership</a>
-                    <a href="https://discord.gg/PN63Qx9nuN" target="_blank">Contact</a>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-500 text-sm mb-4 md:mb-0">
+                    © 2025 Feispla Coaching. Todos los derechos reservados. 
+                    <span class="text-valorant-red">Hecho con ❤️ para CrossAim x FEISS </span>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-discord text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitch text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-youtube text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 1500);
         });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Reveal animations
+        gsap.utils.toArray('.reveal-text').forEach(element => {
+            gsap.fromTo(element, 
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Stats counter animation
+        const stats = document.querySelectorAll('.stat-number');
+        stats.forEach(stat => {
+            const target = parseInt(stat.getAttribute('data-target'));
+            gsap.to(stat, {
+                innerHTML: target,
+                duration: 2,
+                snap: { innerHTML: 1 },
+                scrollTrigger: {
+                    trigger: stat,
+                    start: "top 80%"
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('shadow-lg', 'bg-valorant-dark/95');
+            } else {
+                navbar.classList.remove('shadow-lg', 'bg-valorant-dark/90');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1544,29 +982,51 @@
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('mobileMenu').classList.add('hidden');
                 }
             });
         });
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.player-card, .stat-card, .support-card, .tier-card').forEach(el => {
-            el.classList.add('fade-in');
-            observer.observe(el);
+        // Particle effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.97) {
+                createParticle(e.clientX, e.clientY);
+            }
         });
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.background = Math.random() > 0.5 ? '#FF4655' : '#00F0FF';
+            document.body.appendChild(particle);
+            
+            gsap.to(particle, {
+                x: (Math.random() - 0.5) * 100,
+                y: (Math.random() - 0.5) * 100,
+                opacity: 0,
+                duration: 1,
+                onComplete: () => particle.remove()
+            });
+        }
+
+        // Glitch effect randomizer
+        setInterval(() => {
+            const glitch = document.querySelector('.glitch');
+            if (glitch && Math.random() > 0.95) {
+                glitch.style.animation = 'none';
+                setTimeout(() => {
+                    glitch.style.animation = '';
+                }, 100);
+            }
+        }, 3000);
     </script>
 </body>
 </html>
+
